@@ -1,0 +1,40 @@
+void dfs(int node, vector<int>&A, int &ans, vector<int>&vis)
+{
+    //vis[] will be 0 for not visited; 1 for visited but not good; 2 for the node which is good.
+    //assign vis[node]=1 intitially for the node as soon as you enter, since you only enter this dfs function when the vis[i]==0 in the main function.
+    vis[node]=1;
+    if(vis[A[node-1]]==0)
+    {
+        dfs(A[node-1],A,ans,vis);
+        vis[node]=2;
+    }
+    //You are going to make the ans++ when you go through the path and find a visited node but is not good and becomes an obstacle for current node to become good.
+    //So you will change it to good node and increment your answer.
+    if(vis[A[node-1]]==1)
+    {
+        ans++;
+        vis[node]=2;
+        return;
+    }
+    //if it is already a good node, in that case just return without incrementing the answer.
+    if(vis[A[node-1]]==2)
+    {
+        vis[node]=2;
+        return;
+    }
+    return;
+}
+int Solution::solve(vector<int> &A) {
+    int n=A.size();
+    vector<int> vis(n+1,0);
+    int ans=0;
+    vis[1]=2;
+    for(int i=1;i<=n;i++)
+    {
+        if(!vis[i])
+        {
+            dfs(i,A,ans,vis);
+        }
+    }
+    return ans;
+}
