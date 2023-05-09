@@ -1,0 +1,27 @@
+bool dfs(int node,vector<int> adj[],vector<int>&vis)
+{
+    vis[node]=2;
+    for(auto it: adj[node])
+    {
+        if(!vis[it])
+        {
+            if(dfs(it,adj,vis)) return true;
+        }
+        else if(vis[it]==2) return true;
+    }
+    vis[node]=1;
+    return false;
+}
+int Solution::solve(int A, vector<vector<int> > &B) {
+    vector<int>vis(A+1,0);
+    vector<int>adj[A+1];
+    for(int i=0;i<B.size();i++)
+    {
+        adj[B[i][0]].push_back(B[i][1]);
+    }
+    for(int i=1;i<=A;i++)
+    {
+        if(dfs(i,adj,vis)) return true;
+    } 
+    return false;
+}
