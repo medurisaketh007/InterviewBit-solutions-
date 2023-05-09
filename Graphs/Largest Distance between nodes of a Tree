@@ -1,0 +1,42 @@
+void dfs(int node,vector<int>adj[],vector<int>&vis,int &max, int temp,int &req)
+{
+    vis[node]=1;
+    temp++;
+    if(max<temp)
+    {
+        max=temp;
+        req=node;
+    }
+    for(auto it: adj[node])
+    {
+        if(!vis[it])
+        {
+            dfs(it,adj,vis,max,temp,req);
+        }
+    }
+    return;
+}
+int Solution::solve(vector<int> &A) {
+    int n=A.size();
+    int root;
+    vector<int>adj[n];
+    //We create adjacency list and also identify the root node first.
+    for(int i=0;i<n;i++)
+    {
+        if(A[i]!=-1)
+        {
+            adj[i].push_back(A[i]);
+            adj[A[i]].push_back(i);
+        }
+        else root=i;
+    }
+    int max=0,temp=0,req=-1;
+    vector<int>vis(n,0);
+    //First find the node which is longest from the root node, then do another dfs from that node to find the longest distance between any two nodes in this tree.
+    dfs(root,adj,vis,max,temp,req);
+    max=0;
+    vector<int>vis2(n,0);
+    dfs(req,adj,vis2,max,temp,req);
+    //We do max-1 because max counts the no. of nodes in the path and length is (no. of nodes - 1).
+    return max-1;
+}
